@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+</head>
+<body>
+
+<h2>Dashboard</h2>
+
+<!-- Add Item -->
+<form method="post" action="/add">
+  <input name="title" placeholder="New Item" required>
+  <button>Add</button>
+</form>
+
+<hr>
+
+<!-- View / Rename / Delete -->
+<ul>
+  {% for item in items %}
+    <li>
+      <form method="post" action="/edit/{{ item.id }}" style="display:inline">
+        <input
+          name="title"
+          value="{{ item.title }}"
+          readonly
+        >
+        <button type="button" onclick="enableEdit(this)">Rename</button>
+        <button type="submit" style="display:none;">Save</button>
+      </form>
+
+      <a href="/delete/{{ item.id }}">Delete</a>
+    </li>
+  {% endfor %}
+</ul>
+
+<br>
+<a href="/logout">Logout</a>
+
+<script>
+function enableEdit(button) {
+  const form = button.parentElement;
+  const input = form.querySelector('input');
+  const saveBtn = form.querySelector('button[type="submit"]');
+
+  input.removeAttribute('readonly');
+  input.focus();
+
+  button.style.display = 'none';
+  saveBtn.style.display = 'inline';
+}
+</script>
+
+</body>
+</html>
